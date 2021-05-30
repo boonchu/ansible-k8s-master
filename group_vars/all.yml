@@ -1,0 +1,33 @@
+##### Kubernetes init params ######
+kube_version: 1.20.1
+
+# kubeadm kubelet version
+package_version: 1.20.1-00
+
+# By default, kubeadm init automatically generates the token used to 
+# initialise each new node. If you would like to manually specify this 
+# token, you can use the --token flag. The token must be of the format 
+# [a-z0-9]{6}\.[a-z0-9]{16}.
+token: b0f7b8.8d1767876297d85c
+
+# 1.8.x feature: --feature-gates SelfHosting=true
+init_opts: ""
+
+# Any other additional opts you want to add..
+kubeadm_opts: ""
+
+# Container runtimes ('containerd', 'crio')
+container_runtime: containerd
+
+service_cidr: "10.96.0.0/12"
+pod_network_cidr: "10.244.0.0/16"
+
+
+##### kubectl config #####
+kubeadmin_config: /etc/kubernetes/admin.conf
+
+
+##### Networking ######
+# Network implementation('flannel', 'calico', 'canal')
+network: calico
+network_dir: /etc/kubernetes/network

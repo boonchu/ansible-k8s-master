@@ -1,0 +1,7 @@
+---
+# handlers file for pre-install
+- name: Restart kubelet
+  systemd:
+    name: kubelet
+    daemon_reload: yes
+    enabled: yes

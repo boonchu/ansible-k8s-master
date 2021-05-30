@@ -1,0 +1,4 @@
+---
+# tasks file for docker
+- name: Install Docker container engine
+  include_tasks: packages.yaml

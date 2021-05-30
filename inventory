@@ -1,0 +1,14 @@
+[masters]
+dev-b01.k8s.loc
+
+[workers]
+dev-b02.k8s.loc
+dev-b03.k8s.loc
+
+[multi:children]
+masters
+workers
+
+[multi:vars]
+ansible_python_interpreter='python3'
+ansible_ssh_user=bigchoo
