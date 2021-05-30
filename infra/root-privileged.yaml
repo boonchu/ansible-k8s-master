@@ -1,0 +1,61 @@
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: root-privileged
+spec:
+  privileged: true
+  allowPrivilegeEscalation: true
+  readOnlyRootFilesystem: false
+  allowedCapabilities:
+  - '*'
+  allowedProcMountTypes:
+  - '*'
+  allowedUnsafeSysctls:
+  - '*'
+  volumes:
+  - '*'
+  hostPorts:
+  - min: 0
+    max: 65535
+  hostIPC: true
+  hostPID: true
+  hostNetwork: true
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+---
+#  kubectl create role psp:metrics-admin-role --verb use --resource podsecuritypolicy --resource-name=root-privileges
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: psp:metrics-admin-role
+rules:
+- apiGroups:
+  - policy
+  resourceNames:
+  - root-privileged
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
+---
+#  kubectl create rolebinding psp:metrics-admin-rolebinding --role=psp:metrics-admin-role --serviceaccount=kube-admin:metrics-server
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: psp:metrics-admin-rolebinding
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: psp:metrics-admin-role
+subjects:
+- kind: ServiceAccount
+  name: metrics-server
+  namespace: kube-system
