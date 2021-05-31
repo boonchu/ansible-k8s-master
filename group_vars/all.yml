@@ -31,3 +31,9 @@ kubeadmin_config: /etc/kubernetes/admin.conf
 # Network implementation('flannel', 'calico', 'canal')
 network: calico
 network_dir: /etc/kubernetes/network
+
+
+##### crictl - containerd #####
+crictl_dir: /etc
+crictl_config: crictl.yaml
+crictl_endpoint: unix:///run/containerd/containerd.sock
