@@ -37,3 +37,9 @@ network_dir: /etc/kubernetes/network
 crictl_dir: /etc
 crictl_config: crictl.yaml
 crictl_endpoint: unix:///run/containerd/containerd.sock
+
+
+##### kube-bench #####
+# version string must be maintaining regularly.
+# https://github.com/aquasecurity/kube-bench/releases
+kubebench_url: https://github.com/aquasecurity/kube-bench/releases/download/v0.6.2/kube-bench_0.6.2_linux_amd64.deb

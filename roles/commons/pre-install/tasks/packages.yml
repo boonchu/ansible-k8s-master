@@ -27,3 +27,19 @@
     state: present
     force: True
   with_items: "{{ packages }}"
+
+
+# kube-bench installer, apply to all nodes.
+#- name: Upgrade kube-bench package if exists (Debian/Ubuntu)
+#  when: ansible_os_family == "Debian"
+#  apt:
+#    deb: "{{ kubebench_url }}"
+#  only_upgrade: True 
+#  register: was_upgraded
+
+
+#- name: Install kube-bench pacakge if not exists (Debian/Ubuntu)
+#  when: ansible_os_family == "Debian"
+#  apt:
+#    deb: "{{ kubebench_url }}"
+#  when: was_upgraded.false

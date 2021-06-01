@@ -1,9 +1,10 @@
 all: ansible-run
 
+# prereq steps
 sync-clock:
 	@./ensure-package-chrony-exists.sh
 
-ansible-run: sync-clock
+ansible-run:
 	@ansible-playbook -i inventory -e network_interface=eth0  playbook.yaml    
 
 ping-nodes:
