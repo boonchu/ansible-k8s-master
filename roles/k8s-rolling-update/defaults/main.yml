@@ -1,0 +1,11 @@
+---
+# defaults file for k8s-rolling-update
+# Location for kubectl on the nodes.
+bin_dir: /usr/bin
+# Period of time in seconds given to each pod to terminate gracefully. If
+# negative, the default value specified in the pod will be used.
+drain_grace_period: 300
+# The length of time to wait before giving up, zero means infinite.
+drain_timeout: 360s
+# kubeconfig
+kube_config_file: /etc/kubernetes/admin.conf

@@ -1,0 +1,35 @@
+---
+- name: Check current docker-compose version
+  command: "{{ docker_compose_path }} --version"
+  register: docker_compose_current_version
+  changed_when: false
+  failed_when: false
+
+
+- name: Delete existing docker-compose version
+  file:
+    path: "{{ docker_compose_path }}"
+    state: absent
+  when: >
+    docker_compose_current_version.stdout is defined
+    and docker_compose_version not in docker_compose_current_version.stdout
+
+
+- name: Install docker-compose
+  get_url:
+    url: "{{ docker_compose_url }}"
+    dest: "{{ docker_compose_path }}"
+    mode: 0755
+  when: >
+    docker_compose_current_version.stdout is not defined
+    or docker_compose_version not in docker_compose_current_version.stdout
+
+
+# Set net.core.wmem_max and net.core.rmem_max in /etc/sysctl.conf
+# https://miff2000.github.io/blog/2017/05/17/nfs-performance-tuning.html
+- name: sysctl set vm.max_map_count for docker-compose
+  ansible.posix.sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    state: present
+    reload: yes

@@ -1,0 +1,35 @@
+---
+# tasks file for k8s-rolling-update
+- name: Get the node's details
+  command: >-
+    {{ bin_dir }}/kubectl get node
+    --kubeconfig {{ kube_config_file }}
+    -l node-role.kubernetes.io/worker
+    -o json
+  register: kubectl_get_node
+  delegate_to: "{{ groups['masters'][0] }}"
+  failed_when: false
+  changed_when: false
+
+
+- name: Print kubectl_get_node status output 
+  debug:
+    msg:
+    - "output is: {{ kubectl_get_node['stdout'] | from_json | json_query(\"status.conditions[?type == 'Ready'].status\") }}"
+
+
+- name: Update Node
+  when:
+    # When status.conditions[x].type == Ready then check stats.conditions[x].status for True|False
+    - kubectl_get_node['stdout'] | from_json | json_query("status.conditions[?type == 'Ready'].status")
+    # If spec.unschedulable is defined then the node is cordoned
+    - not (kubectl_get_node['stdout'] | from_json).spec.unschedulable is defined
+  block:
+    - name: Cordon & drain node
+      include_tasks: drain.yml
+
+    - name: Upgrade the Operating System
+      include_tasks: "{{ ansible_distribution }}.yml"
+
+    - name: Uncordon node
+      include_tasks: uncordon.yml

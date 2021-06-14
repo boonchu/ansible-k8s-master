@@ -5,7 +5,11 @@ sync-clock:
 	@./ensure-package-chrony-exists.sh
 
 ansible-run:
+	@yamllint ./roles/docker/
 	@ansible-playbook -i inventory -e network_interface=eth0  playbook.yaml    
+
+k8s-update:
+	@ansible-playbook -i inventory -e network_interface=eth0 k8s-update.yaml
 
 ping-nodes:
 	@ansible multi -i inventory -a "date"

@@ -1,0 +1,33 @@
+---
+- name: Cordon node
+  command: >-
+    {{ bin_dir }}/kubectl cordon
+    --kubeconfig {{ kube_config_file }} 
+    {{ kube_override_hostname|default(inventory_hostname)|replace('.k8s.loc','') }}
+  delegate_to: "{{ groups['workers'][0] }}"
+
+
+- name: Wait for node to cordon
+  command: >-
+    {{ bin_dir }}/kubectl get node
+    --kubeconfig {{ kube_config_file }}
+    {{ kube_override_hostname|default(inventory_hostname)|replace('.k8s.loc','') }}
+    -o json
+  register: wait_for_cordon
+  retries: 10
+  delay: 10
+  delegate_to: "{{ groups['workers'][0] }}"
+  changed_when: false
+  until: (wait_for_cordon['stdout'] | from_json).spec.unschedulable
+
+
+- name: Drain node
+  command: >-
+    {{ bin_dir }}/kubectl drain
+    --force
+    --ignore-daemonsets
+    --grace-period {{ drain_grace_period }}
+    --timeout {{ drain_timeout }}
+    --kubeconfig {{ kube_config_file }}
+    --delete-local-data {{ kube_override_hostname|default(inventory_hostname)|replace('.k8s.loc','') }}
+  delegate_to: "{{ groups['workers'][0] }}"

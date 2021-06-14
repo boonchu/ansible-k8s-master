@@ -29,6 +29,17 @@
   with_items: "{{ packages }}"
 
 
+- name: Install utilities packages (Debian/Ubuntu)
+  when: ansible_os_family == "Debian"
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: present
+    force: True
+  with_items:
+  - nfs-common
+
+
 # kube-bench installer, apply to all nodes.
 #- name: Upgrade kube-bench package if exists (Debian/Ubuntu)
 #  when: ansible_os_family == "Debian"

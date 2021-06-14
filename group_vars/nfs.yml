@@ -1,0 +1,2 @@
+---
+nfs_exports: [ "/nfs/vol1 *(rw,wdelay,insecure,no_root_squash,no_subtree_check,sec=sys,rw,insecure,no_root_squash,no_all_squash)" ]

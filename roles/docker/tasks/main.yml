@@ -1,7 +1,11 @@
 ---
 # tasks file for docker
 - name: Install Docker container engine
-  include_tasks: packages.yaml
+  include_tasks: packages.yml
+
+
+- name: Install Docker Compose
+  include_tasks: docker_compose.yml
 
 
 # https://kubernetes.io/docs/tasks/debug-application-cluster/crictl/

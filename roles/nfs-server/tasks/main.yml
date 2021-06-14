@@ -1,0 +1,50 @@
+---
+# tasks file for nfs-server
+# Include variables and define needed variables.
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yml"
+
+
+- name: Install software packages
+  include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+
+- name: Ensure directories to export exist
+  file:  # noqa 208
+    path: "{{ item.strip().split()[0] }}"
+    state: directory
+  with_items: "{{ nfs_exports }}"
+
+
+- name: Copy exports file.
+  template:
+    src: exports.j2
+    dest: /etc/exports
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload nfs
+
+
+- name: Ensure nfs is running.
+  service: "name={{ nfs_server_daemon }} state=started enabled=yes"
+  when: nfs_exports|length
+
+
+# Set net.core.wmem_max and net.core.rmem_max in /etc/sysctl.conf
+# https://miff2000.github.io/blog/2017/05/17/nfs-performance-tuning.html
+- name: sysctl set net.core.rmem_max for nfs
+  ansible.posix.sysctl:
+    name: net.core.rmem_max
+    value: '219136'
+    state: present
+    reload: yes
+
+
+- name: sysctl set net.core.wmem_max for nfs
+  ansible.posix.sysctl:
+    name: net.core.wmem_max
+    value: '219136'
+    state: present
+    reload: yes

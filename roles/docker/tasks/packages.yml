@@ -5,12 +5,12 @@
   when: ansible_os_family == "Debian"
   apt:
     pkg:
-    - apt-transport-https
-    - ca-certificates
-    - curl
-    - gnupg-agent
-    - software-properties-common
-    - lsb-release
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg-agent
+      - software-properties-common
+      - lsb-release
     state: present
     update_cache: yes
 
