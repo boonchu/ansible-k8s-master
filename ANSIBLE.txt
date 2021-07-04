@@ -1,0 +1,156 @@
+### Plugin Types ###
+
+httpapi
+inventory
+lookup
+netconf
+shell
+strategy
+vars
+
+### Inventory ####
+
++ /etc/ansible/hosts Default inventory file
++ parameter ansible-playbook -i host.txt -i groups.txt
++ inventory usually in INI or YAML format
++ All hosts belong to 'all' group
++ 'Ungrouped' hosts belong to the 'ungrouped' group
++ All hosts will belong to at least 2 groups: 'all' and 'ungrouped'
++ Nested inventory
+
+seattle:
+  web1.local.net
+  web2.local.net
+sanfrancisco:
+  web3.local.net
+  db2.local.net
+prod:
+  children:
+    sanfrancisco:
+test:
+  children:
+    seattle:
+
++ Using Numeric Ranges
+
+all:
+  hosts:
+    mail1.local.net
+  children:
+    webservers:
+      hosts:
+        web[1:3].local.net:
+
++ ansible-playbook deploy.yml -i staging -i production
++ Ansible Dynamic Inventory Plugins or Scripts
+
+### Configuration Source ###
+
+ansible.cfg
+Environment Variables
+Command line options
+Playbook keywords
+Ansible variables
+Locations:
+ - Location in $ANSIBLE_CONFIG
+ - ./ansible.cfg
+ - ~/ansible.cfg
+ - /etc/ansible/ansible.cfg
+Configuration Data Priority
+ - Variables:
+   vars: -e 'ansible_user=ansible'
+ - Environment Variables
+ - Command line options
+ - Playbook keywords
+
+### Parallelization ###
+
+# Ansible Ad-hoc with parallelization 2 and ask for password when access with 'bigchoo' user.
+ansible all -b -i inventory -m apt -a "name=chrony state=present" -f 2 -u bigchoo --become --ask-become-pass
+
+### Patterns ###
+
+Pattern: webservers:dbservers - Using match from group 'webservers' or 'dbservers'
+Pattern: webservers:!dbservers - Using match from group 'webservers' and exclude items in 'dbservers'
+Pattern: webservers:&dbservers - Using match from group 'webservers' and 'dbservers'
+Pattern: 192.168.\* or \*.local.net
+Pattern: ~(web|db).*\.local\.net
+
+ansible dev-b0* -b -i inventory -m file -a "path=/tmp/file.txt state=touch mode=644" -f 2 -u bigchoo -b -K
+ansible dev-b0* -b -i inventory -m copy -a "dest=/tmp/file.txt content='stuff' force=no mode=644" -f 2 -u bigchoo -b -K
+
+### Modules ###
+ - touch
+ - file
+ - copy
+ - yum
+   -m yum -a "name=* state=latest" -b -K                         |  yum update -y
+   -m yum -a "name='@Development tools' state=installed" -b -K   |  yum group install
+   -m yum -a "list=installed"                                    |  yum list installed
+ - Module Index
+ - service
+   -m service -a "name=httpd enabled=yes" --check
+ - shell
+   -m shell -a "systemctl status chronyd"
+ - user
+   > doveadm pw -s SHA512-CRYPT -p pass
+   {SHA512-CRYPT}$6$w.S0AQzFoMU7.WlH$M7XAc89kP1uHCEUezDsR0aQIXC3t3vvqkQl2YKQ6WKvetnkxfoyw2zN1t/oNTbpEhOa4iZoLHrX584ueVp9ks1
+   -m user -a 'name=dummy state=present home=/apps/dummy shell=/bin/sh password=$6$w.S0AQzFoMU7.WlH$M7XAc89kP1uHCEUezDsR0aQIXC3t3vvqkQl2YKQ6WKvetnkxfoyw2zN1t/oNTbpEhOa4iZoLHrX584ueVp9ks1' -b -K
+   -m user -a 'name=dummy state=absent group=wheel' -b -K
+ - setup
+   -m setup -a 'gather_subset=!all,!min,hardware filter=ansible_mounts'
+
+### Connection ###
+
+ - Disable Host Key Checking
+   [defaults]
+   host_key_checking = False  
+ 
+ - local
+ - docker
+ - kubectl
+ - vmware_tools
+ - ansible-doc -t connection <plugin name>
+
+### Ansible-Config ###
+
+ > ansible-config dump --only-changed
+
+### Ansible-Console ###
+
+ > ansible-console dev-b* -i inventory -a -b -K
+
+bigchoo@dev-b* (4)[f:5]# shell hostname
+dev-b02.k8s.loc | CHANGED | rc=0 >>
+dev-b02
+dev-b01.k8s.loc | CHANGED | rc=0 >>
+dev-b01
+dev-b99.k8s.loc | CHANGED | rc=0 >>
+dev-b99
+dev-b03.k8s.loc | CHANGED | rc=0 >>
+dev-b03
+
+### Ansible-Inventory ###
+
+ > ansible-inventory -i inventory --list --output inventory.json
+
+ > ansible-inventory -i inventory --graph
+@all:
+  |--@devops:
+  |  |--dev-s01.k8s.loc
+  |--@masters:
+  |  |--dev-b01.k8s.loc
+  |--@multi:
+  |  |--@devops:
+  |  |  |--dev-s01.k8s.loc
+  |  |--@masters:
+  |  |  |--dev-b01.k8s.loc
+  |  |--@workers:
+  |  |  |--dev-b02.k8s.loc
+  |  |  |--dev-b03.k8s.loc
+  |--@nfs:
+  |  |--dev-b99.k8s.loc
+  |--@ungrouped:
+  |--@workers:
+  |  |--dev-b02.k8s.loc
+  |  |--dev-b03.k8s.loc

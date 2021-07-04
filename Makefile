@@ -2,6 +2,7 @@ all: ansible-run
 
 # prereq steps
 sync-clock:
+	# Ansible Ad-Hoc commands
 	@./ensure-package-chrony-exists.sh
 
 ansible-run:

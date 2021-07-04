@@ -1,0 +1,31 @@
+sudo yum update -y
+sudo yum groupinstall -y 'Development Tools'
+
+sudo yum install -y epel-release
+sudo yum install -y python3
+sudo alternatives --set python /usr/bin/python3
+sudo yum install -y ansible ansible-doc
+sudo yum install -y python3-argcomplete
+sudo yum activate-global-python-argcomplete
+
+ansible --version
+
++ /etc/ansible/hosts
+
+# ansible multi -i inventory --list
+ansible all --list hosts
+  hosts (4):
+    dev-b01.k8s.loc
+    dev-b02.k8s.loc
+    dev-b03.k8s.loc
+    dev-s01.k8s.loc
+
+ansible-doc -t cache -l
+ansible.netcommon.memory    RAM backed, non persistent cache
+community.general.memcached Use memcached DB for cache
+community.general.pickle    Pickle formatted files
+community.general.redis     Use Redis DB for cache
+community.general.yaml      YAML formatted files
+community.mongodb.mongodb   Use MongoDB for caching
+jsonfile                    JSON formatted files
+memory                      RAM backed, non persistent
