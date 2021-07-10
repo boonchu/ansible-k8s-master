@@ -8,3 +8,20 @@ docker_install_compose: true
 docker_compose_version: "1.26.0"
 docker_compose_url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
 docker_compose_path: /usr/local/bin/docker-compose
+
+systemd_resolved_servers:
+  - 172.30.30.52
+systemd_resolved_fallback_servers:
+  - 192.168.60.250
+  - 8.8.8.8
+  - 1.1.1.1
+systemd_resolved_domains:
+  - k8s.loc
+  - infra.loc
+systemd_resolved_llmnr: 'yes'
+systemd_resolved_multicast_dns: 'yes'
+systemd_resolved_dnssec: 'allow-downgrade'
+systemd_resolved_dns_over_tls: 'no'
+systemd_resolved_cache: yes
+systemd_resolved_dns_stub_listener: 'yes'
+systemd_resolved_read_etc_hosts: yes

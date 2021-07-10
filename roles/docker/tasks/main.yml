@@ -14,6 +14,7 @@
 - name: "Copy {{ crictl_config }} YAML files"
   template:
     src: "{{ item }}"
+    mode: 0644
     dest: "{{ crictl_dir }}/{{ item | basename | regex_replace('\\.j2','') }}"
   with_fileglob:
     - ../templates/{{ crictl_config }}*.j2

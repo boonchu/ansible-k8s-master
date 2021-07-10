@@ -7,10 +7,12 @@ sync-clock:
 
 ansible-run:
 	@yamllint ./roles/docker/
-	@ansible-playbook -i inventory -e network_interface=eth0  playbook.yaml    
+	@ansible-lint ./roles/docker/
+	@ansible-galaxy install -r requirements.yml
+	@ansible-playbook -i inventory -e network_interface=eth0 playbook.yml    
 
 k8s-update:
-	@ansible-playbook -i inventory -e network_interface=eth0 k8s-update.yaml
+	@ansible-playbook -i inventory -e network_interface=eth0 k8s-update.yml
 
 ping-nodes:
 	@ansible multi -i inventory -a "date"

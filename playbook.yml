@@ -3,6 +3,7 @@
   gather_facts: yes
   become: yes
   roles:
+    - { role: boonchu.systemd_resolved, tags: systemd-resolved }
     - { role: docker, tags: docker }
 
 

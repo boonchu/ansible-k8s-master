@@ -1,0 +1,4 @@
+---
+- name: boonchu.systemd_resolved
+  src: https://github.com/boonchu/ansible-role-systemd-resolved.git
+  version: origin/master
