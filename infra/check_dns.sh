@@ -30,5 +30,5 @@ kubectl wait pod dnsutils --for condition=containersready --timeout=60s
 
 kubectl exec -n default -it dnsutils -- nslookup kubernetes.default
 kubectl exec -n default -ti dnsutils -- cat /etc/resolv.conf
-kubectl exec -n default -it dnsutils -- nslookup k8s.gcr.io
+kubectl exec -n default -it dnsutils -- nslookup k8s.gcr.io.
 kubectl get svc -o wide --namespace=kube-system

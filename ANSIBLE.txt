@@ -68,6 +68,24 @@ Configuration Data Priority
 # Ansible Ad-hoc with parallelization 2 and ask for password when access with 'bigchoo' user.
 ansible all -b -i inventory -m apt -a "name=chrony state=present" -f 2 -u bigchoo --become --ask-become-pass
 
+### Asynchronous tasks ###
+
+# https://stackoverflow.com/questions/56157364/ansible-task-with-async-and-become-giving-job-not-found-error
+# https://medium.com/@knoldus/ansible-asynchronous-actions-and-polling-9e8ede5c3032
+
+sudo visudo to allow become to root for /tmp/hello.sh execution
+
+cat <<- ECHO | tee /tmp/hello.sh
+#!/bin/bash
+
+echo "Beginning of task"
+x=1; while [ $x -le 3 ]; do echo "In progressing and waiting for " $(( x++ )) " seconds"; sleep $x; done
+maxdelay=5; delay=$(($RANDOM%maxdelay)); echo "In progress and wait randomly for $delay"; sleep $delay
+echo "End of task"
+ECHO
+
+ansible-playbook ansible-async-task.yml
+
 ### Patterns ###
 
 Pattern: webservers:dbservers - Using match from group 'webservers' or 'dbservers'

@@ -1,0 +1,44 @@
+-  hosts: localhost
+   become: yes
+   become_user: root
+   tasks: 
+
+   -  name: BASH script with asynchronous mode. 
+      shell: /tmp/hello.sh
+      register: start_task
+      async: 180
+      poll: 0
+
+   -  name: Update apt cache when value is not 1 hour.
+      register: update_cache_stats
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+   -  name: Display cache stats.
+      debug:
+        msg: "{{ update_cache_stats }}"
+
+   # https://www.middlewareinventory.com/blog/ansible-apt-examples/
+   -  name: Install software packages.
+      apt:
+        name: vim-common
+        state: present      
+        force_apt_get: yes
+        update_cache: yes
+
+   -  async_status:
+        jid: "{{start_task.ansible_job_id}}"
+      register: start_status
+      until: start_status.finished
+      retries: 5
+
+   # https://www.middlewareinventory.com/blog/ansible-dict-object-has-no-attribute-stdout-or-stderr-how-to-resolve/
+   -  name: Output regular messages when run BASH script task.
+      debug:
+        msg: "{{ start_task }}"
+
+   -  name: Output failed messages when error in BASH script task.
+      fail:
+        msg: "BASH script error"
+      when: start_task.failed
