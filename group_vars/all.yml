@@ -1,3 +1,6 @@
+##### Default ssh key ######
+ansible_ssh_private_key_file: ~/.ssh/id_rsa
+
 ##### Kubernetes init params ######
 kube_version: 1.20.1
 

@@ -1,5 +1,6 @@
 # inspired from this project
 https://github.com/kairen/kubeadm-ansible
+https://devopstales.github.io/kubernetes/k8s-metallb-bgp-pfsense/
 
 # objectives
 
@@ -24,10 +25,16 @@ https://galaxy.ansible.com/docs/contributing/creating_role.html
 # videos
 https://www.youtube.com/watch?v=WNmKjtWtqIc
 
+# dynamic inventory demo
+https://devopscube.com/setup-ansible-aws-dynamic-inventory/
+
 # k8s rolling upgrade
 https://github.com/kubernetes-sigs/kubespray/blob/master/docs/upgrades.md
 https://itnext.io/automating-system-updates-for-kubernetes-clusters-using-ansible-94a70f4e1972
 https://github.com/kevincoakley/ansible-role-k8s-rolling-update
+
+# k8s pods eviction from nodes
+https://dbafromthecold.com/2020/04/08/adjusting-pod-eviction-time-in-kubernetes/
 
 # Excel spreadsheet Host variables
 https://github.com/KeyboardInterrupt/ansible_xlsx_inventory

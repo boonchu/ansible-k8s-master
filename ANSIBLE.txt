@@ -1,3 +1,54 @@
+### Playbook vs. Role ###
+https://stackoverflow.com/questions/32101001/ansible-playbooks-vs-roles?rq=1
+
+* [databases] is a single name for a group of hosts. It allows you to 
+  reference multiple hosts by a single name.
+* Role is a set of tasks and additional files to configure host to serve 
+  for a certain role.
+* Playbook is a mapping between a group of hosts and roles.
+
+### ssh public key in order of precedence for 'vars' ###
+https://stackoverflow.com/questions/44734179/specifying-ssh-key-in-ansible-playbook-file?rq=1
+https://stackoverflow.com/questions/26641070/how-do-ansible-host-vars-work
+
+Vars set on the command line -e foo=set_on_cmd_line
+Vars set in the vars_files: block in the play
+Vars set in the vars: block in the play
+Vars set in host_vars/
+Vars set in group_vars/
+Role default vars roles/.../defaults/main.yml
+
+for instances:
+```
+* in the inventory file:
+  myHost ansible_ssh_private_key_file=~/.ssh/mykey1.pem
+  myOtherHost ansible_ssh_private_key_file=~/.ssh/mykey2.pem
+
+* in the host_vars:
+  # host_vars/myHost.yml
+  ansible_ssh_private_key_file: ~/.ssh/mykey1.pem
+  # host_vars/myOtherHost.yml
+  ansible_ssh_private_key_file: ~/.ssh/mykey2.pem
+
+* in a group_vars file if you use the same key for a group of hosts
+  # host_vars/myHost.yml
+  ansible_ssh_private_key_file: ~/.ssh/mykey1.pem
+  # host_vars/myOtherHost.yml
+  ansible_ssh_private_key_file: ~/.ssh/mykey2.pem
+
+* in the vars section of your play:
+
+  - hosts: myHost
+    remote_user: ubuntu
+    vars_files:
+      - vars.yml
+    vars:
+      ansible_ssh_private_key_file: "{{ key1 }}"
+    tasks:
+      - name: Echo a hello message
+        command: echo hello
+```
+
 ### Plugin Types ###
 
 httpapi

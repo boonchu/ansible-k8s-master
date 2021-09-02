@@ -18,3 +18,28 @@
     dest: "{{ crictl_dir }}/{{ item | basename | regex_replace('\\.j2','') }}"
   with_fileglob:
     - ../templates/{{ crictl_config }}*.j2
+
+
+# legacy installer
+# https://devopstales.github.io/kubernetes/k8s-kubeadm-ha/
+# Use docker engine
+
+# yum install -y -q yum-utils device-mapper-persistent-data lvm2
+# yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+# yum install -y -q docker-ce docker-compose
+#
+# mkdir /etc/docker
+# echo '{
+#   "log-driver": "json-file",
+#   "log-opts": {
+#     "max-size": "100m"
+#   },
+#   "storage-driver": "overlay2",
+#   "exec-opts": ["native.cgroupdriver=systemd"],
+#   "storage-opts": [
+#     "overlay2.override_kernel_check=true"
+#   ]
+# }' > /etc/docker/daemon.json
+#
+# systemctl enable docker
+# systemctl start docker

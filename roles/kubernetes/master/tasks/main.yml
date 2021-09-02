@@ -22,7 +22,11 @@
   register: started_kubelet 
 
 
-- name: "Copy config file"
+# pending task: install kubconfig in node
+# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+# sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+- name: "Copy kubeconfig file to local laptop"
   fetch:
     src: /etc/kubernetes/admin.conf 
     dest: "{{ lookup('env', 'HOME') }}/admin.conf"
