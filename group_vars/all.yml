@@ -11,7 +11,7 @@ package_version: 1.20.1-00
 # initialise each new node. If you would like to manually specify this 
 # token, you can use the --token flag. The token must be of the format 
 # [a-z0-9]{6}\.[a-z0-9]{16}.
-token: b0f7b8.8d1767876297d85c
+token: wk9n6r.gcb5fyq9oqwb13j4
 
 # 1.8.x feature: --feature-gates SelfHosting=true
 init_opts: ""
@@ -28,7 +28,6 @@ pod_network_cidr: "10.244.0.0/16"
 
 ##### kubectl config #####
 kubeadmin_config: /etc/kubernetes/admin.conf
-
 
 ##### Networking ######
 # Network implementation('flannel', 'calico', 'canal')

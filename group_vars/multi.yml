@@ -10,14 +10,12 @@ docker_compose_url: https://github.com/docker/compose/releases/download/{{ docke
 docker_compose_path: /usr/local/bin/docker-compose
 
 systemd_resolved_servers:
-  - 172.30.30.52
-systemd_resolved_fallback_servers:
   - 192.168.60.250
+systemd_resolved_fallback_servers:
   - 8.8.8.8
   - 1.1.1.1
 systemd_resolved_domains:
   - k8s.loc
-  - infra.loc
 systemd_resolved_llmnr: 'yes'
 systemd_resolved_multicast_dns: 'yes'
 systemd_resolved_dnssec: 'no' # 'allow-downgrade'

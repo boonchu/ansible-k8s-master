@@ -130,12 +130,19 @@ cat <<- ECHO | tee /tmp/hello.sh
 #!/bin/bash
 
 echo "Beginning of task"
-x=1; while [ $x -le 3 ]; do echo "In progressing and waiting for " $(( x++ )) " seconds"; sleep $x; done
-maxdelay=5; delay=$(($RANDOM%maxdelay)); echo "In progress and wait randomly for $delay"; sleep $delay
+x=1;
+while [ $x -le 3 ]; do
+  echo "In progressing and waiting for " $(( x++ )) " seconds"
+  sleep $x
+done
+delay=$(( $RANDOM % 5 ))
+echo "In progress and wait randomly for $delay"
+sleep $delay
+
 echo "End of task"
 ECHO
 
-ansible-playbook ansible-async-task.yml
+ansible-playbook ansible-async-tasks.yml
 
 ### Patterns ###
 
