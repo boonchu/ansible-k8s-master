@@ -43,8 +43,15 @@ https://github.com/KeyboardInterrupt/ansible_xlsx_inventory
 #### How to run?
 
 $ python3 -m venv venv
+
 $ venv/bin/activate 
+
 $ pip3 install -r requirements.txt
+
 $ ansible-galaxy role install -r requirements.yml
+
 $ make sync-clock
+
 $ make all
+
+
