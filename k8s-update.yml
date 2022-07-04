@@ -1,8 +1,7 @@
 ---
-- hosts: multi
+- hosts: workers
   gather_facts: no
-  become: yes
-  become_method: sudo
+  become: no
   serial: 1
   any_errors_fatal: "{{ any_errors_fatal | default(true) }}"
   roles:

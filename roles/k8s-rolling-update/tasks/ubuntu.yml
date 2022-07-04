@@ -1,9 +1,9 @@
 ---
-- name: Update all packages
-  apt:
-    upgrade: dist
-    update_cache: true
-    force_apt_get: true
+# - name: Update all packages
+#   apt:
+#     upgrade: dist
+#     update_cache: true
+#     force_apt_get: true
 
 
 - name: Check if reboot is required
@@ -12,7 +12,7 @@
   register: reboot_required
 
 
-- name: Reboot the server
-  reboot:
-    post_reboot_delay: 30
-  when: reboot_required.stat.exists
+# - name: Reboot the server
+#   reboot:
+#     post_reboot_delay: 30
+#   when: reboot_required.stat.exists

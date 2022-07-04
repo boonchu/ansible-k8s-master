@@ -4,7 +4,7 @@
     {{ bin_dir }}/kubectl cordon
     --kubeconfig {{ kube_config_file }} 
     {{ kube_override_hostname|default(inventory_hostname)|replace('.k8s.loc','') }}
-  delegate_to: "{{ groups['workers'][0] }}"
+  delegate_to: localhost
 
 
 - name: Wait for node to cordon
@@ -16,7 +16,7 @@
   register: wait_for_cordon
   retries: 10
   delay: 10
-  delegate_to: "{{ groups['workers'][0] }}"
+  delegate_to: localhost
   changed_when: false
   until: (wait_for_cordon['stdout'] | from_json).spec.unschedulable
 
@@ -30,4 +30,4 @@
     --timeout {{ drain_timeout }}
     --kubeconfig {{ kube_config_file }}
     --delete-local-data {{ kube_override_hostname|default(inventory_hostname)|replace('.k8s.loc','') }}
-  delegate_to: "{{ groups['workers'][0] }}"
+  delegate_to: localhost

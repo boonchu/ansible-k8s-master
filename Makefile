@@ -9,10 +9,10 @@ ansible-run:
 	@yamllint ./roles/docker/
 	@ansible-lint ./roles/docker/
 	@ansible-galaxy install -r requirements.yml
-	@ansible-playbook -i inventory -e network_interface=eth0 playbook.yml    
+	@ansible-playbook -i inventory -e network_interface=enp0s3 playbook.yml    
 
 k8s-update:
-	@ansible-playbook -i inventory -e network_interface=eth0 k8s-update.yml
+	@ansible-playbook -i inventory -e network_interface=enp0s3 -e kube_override_hostname=dev-b02.k8s.loc k8s-update.yml
 
 ping-nodes:
 	@ansible multi -i inventory -a "date"
