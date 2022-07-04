@@ -54,4 +54,10 @@ $ make sync-clock
 
 $ make all
 
+#### K8S ####
 
+* static pods
+  - https://executeoncommand.medium.com/kubernetes-tutorial-what-are-static-pods-1e5a661286a3
+
+* admission controller 
+  - https://medium.com/@AbhijeetKasurde/using-kubernetes-admission-controllers-1e5ba5cc30c0
